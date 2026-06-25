@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Reply Studio - @BraRicky</title>
+<script src="https://js.puter.com/v2/"></script>
 <style>
   :root{
     --bg:#11140f; --panel:#181c14; --panel2:#1f241a; --line:#2c3326;
@@ -19,8 +20,7 @@
   body{
     background:var(--bg); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.5; padding:0 0 60px;
-    -webkit-font-smoothing:antialiased;
+    line-height:1.5; padding:0 0 60px; -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:680px;margin:0 auto;padding:18px 16px;padding-top:max(18px,env(safe-area-inset-top))}
   header.app{text-align:center;padding:14px 0 6px}
@@ -30,49 +30,32 @@
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:14px 0}
   label.field{display:block;font-size:13px;color:var(--muted);margin:0 0 7px;font-weight:600;letter-spacing:.2px}
-  textarea,input[type=text]{
-    width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);
-    border-radius:12px;padding:13px;font-size:16px;font-family:inherit;resize:vertical
-  }
-  textarea:focus,input:focus{outline:none;border-color:var(--gold)}
-  textarea#tweet{min-height:96px}
-  textarea#ctx{min-height:46px}
+  textarea{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:16px;font-family:inherit;resize:vertical}
+  textarea:focus{outline:none;border-color:var(--gold)}
+  textarea#tweet{min-height:90px}
+  textarea#ctx{min-height:42px}
 
   .moods{display:flex;flex-wrap:wrap;gap:9px;margin-top:4px}
-  .chip{
-    background:var(--chip);border:1px solid var(--line);color:var(--ink);
-    padding:9px 13px;border-radius:999px;font-size:14px;cursor:pointer;user-select:none;
-    transition:.12s;display:flex;align-items:center;gap:7px
-  }
-  .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--muted);transition:.12s}
-  .chip.on{background:var(--chipOn);border-color:var(--green)}
-  .chip.on .dot{background:var(--green)}
+  .chip{background:var(--chip);border:1px solid var(--line);color:var(--ink);padding:11px 15px;border-radius:999px;font-size:15px;cursor:pointer;user-select:none;transition:.12s;font-weight:600}
+  .chip.on{background:var(--chipOn);border-color:var(--green);color:#fff}
 
-  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
-  select{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:15px;font-family:inherit}
-
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    border:none;border-radius:12px;padding:15px 18px;font-size:16px;font-weight:700;
-    cursor:pointer;font-family:inherit;width:100%
-  }
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;padding:15px 18px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;width:100%}
   .btn-primary{background:var(--gold);color:#1a1500}
   .btn-primary:active{filter:brightness(.92)}
-  .btn-copy{background:var(--green);color:#0e1408;margin-top:12px}
-  .btn-copy.done{background:#3a4a2a;color:var(--ink)}
+  .btn-primary:disabled{opacity:.55;cursor:default}
 
-  .out-wrap{display:none;margin-top:14px}
-  .out{
-    background:#0d1009;border:1px solid var(--line);border-radius:12px;padding:13px;
-    font-size:13.5px;white-space:pre-wrap;max-height:260px;overflow:auto;color:#dfe6d3;
-    font-family:ui-monospace,SFMono-Regular,Menlo,monospace
-  }
-  .openrow{display:flex;gap:9px;margin-top:12px}
-  .openrow a{
-    flex:1;text-align:center;text-decoration:none;background:var(--panel2);color:var(--ink);
-    border:1px solid var(--line);border-radius:11px;padding:12px 6px;font-size:13.5px;font-weight:600
-  }
-  .openrow a:active{border-color:var(--gold)}
+  .results{margin-top:8px}
+  .reply{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+  .reply .txt{font-size:16px;line-height:1.5;white-space:pre-wrap}
+  .reply .bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+  .reply .meta{font-size:12px;color:var(--muted)}
+  .copybtn{background:var(--green);color:#0e1408;border:none;border-radius:10px;padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .copybtn.done{background:#3a4a2a;color:var(--ink)}
+
+  .status{text-align:center;color:var(--muted);font-size:14px;margin:16px 0;min-height:20px}
+  .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .regen{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:12px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;margin-top:4px}
 
   details{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin:14px 0;overflow:hidden}
   summary{padding:15px 16px;cursor:pointer;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
@@ -84,9 +67,6 @@
   .details-body ul{margin:6px 0;padding-left:18px}
   .details-body li{margin:5px 0;font-size:14.5px}
   .good{color:var(--green)} .bad{color:var(--danger)}
-  .lib-line{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:7px 0;font-size:14.5px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center}
-  .lib-line:active{border-color:var(--green)}
-  .lib-line .cp{color:var(--muted);font-size:12px;flex-shrink:0}
   .hint{color:var(--muted);font-size:12.5px;margin-top:8px}
   .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0e1408;padding:12px 20px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -98,80 +78,55 @@
 
   <header class="app">
     <h1>Reply Studio <span class="at">@BraRicky</span></h1>
-    <p>Paste a tweet, pick the moods, copy the prompt, paste into any free AI.</p>
+    <p>Paste a tweet, pick a mood, get a reply in your voice. Copy and post.</p>
   </header>
 
-  <details>
-    <summary>How to use this (read once) <span class="arrow">&rsaquo;</span></summary>
-    <div class="details-body">
-      <ul>
-        <li><b>1.</b> Find a tweet on @BraRicky's page (or a big account we're replying to) that needs a reply.</li>
-        <li><b>2.</b> Copy that tweet and paste it in the box below.</li>
-        <li><b>3.</b> Pick which reply <b>moods</b> you want. Leave all on if unsure.</li>
-        <li><b>4.</b> Tap <b>Build the prompt</b>, then <b>Copy</b>.</li>
-        <li><b>5.</b> Tap <b>ChatGPT / Claude / Gemini</b>, paste, and send. You'll get several ready-to-post replies in Richard's voice.</li>
-        <li><b>6.</b> Pick the best one, tweak if needed, post it.</li>
-      </ul>
-      <p class="hint">Works on iPhone and Android. To keep it handy: open in your browser, then "Add to Home Screen" so it behaves like an app.</p>
-    </div>
-  </details>
-
   <div class="card">
-    <label class="field" for="tweet">The tweet you're replying to</label>
+    <label class="field" for="tweet">1. Paste the tweet you're replying to</label>
     <textarea id="tweet" placeholder="Paste the tweet here..."></textarea>
 
-    <label class="field" for="ctx" style="margin-top:14px">Optional - anything extra (who posted it, the angle you want, a detail to mention)</label>
-    <textarea id="ctx" placeholder="e.g. big Nigerian money account, want a supportive but sharp reply"></textarea>
+    <label class="field" for="ctx" style="margin-top:14px">Optional - extra detail (who posted it, an angle to take)</label>
+    <textarea id="ctx" placeholder="e.g. big Nigerian money account"></textarea>
 
-    <label class="field" style="margin-top:16px">Reply moods</label>
+    <label class="field" style="margin-top:16px">2. Pick a mood</label>
     <div class="moods" id="moods"></div>
 
-    <div class="row" style="margin-top:16px">
-      <span style="font-size:13px;color:var(--muted);font-weight:600">Options per mood</span>
-      <select id="count">
-        <option>2</option><option selected>3</option><option>4</option><option>5</option>
-      </select>
-    </div>
-
-    <button class="btn btn-primary" style="margin-top:18px" onclick="build()">Build the prompt</button>
-
-    <div class="out-wrap" id="outWrap">
-      <div class="out" id="out"></div>
-      <button class="btn btn-copy" id="copyBtn" onclick="copyPrompt()">Copy prompt</button>
-      <div class="openrow">
-        <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>
-        <a href="https://claude.ai" target="_blank" rel="noopener">Claude</a>
-        <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a>
-      </div>
-      <p class="hint">Paste into a free account. No login or data is stored here - this page just builds the text.</p>
-    </div>
+    <button class="btn btn-primary" id="genBtn" style="margin-top:18px" onclick="generate()">3. Write replies</button>
   </div>
 
+  <div class="status" id="status"></div>
+  <div class="results" id="results"></div>
+
   <details>
-    <summary>Reply do's &amp; don'ts (the rules) <span class="arrow">&rsaquo;</span></summary>
+    <summary>Voice rules (do's &amp; don'ts) <span class="arrow">&rsaquo;</span></summary>
     <div class="details-body">
-      <h4>The voice</h4>
-      <p style="font-size:14.5px;margin:4px 0">Calm, grounded, elder-brother wisdom. The disciplined man who's building something real, never the loud "alpha." Short, declarative, complete thoughts. Cut it in half, then post.</p>
+      <p style="font-size:14.5px;margin:4px 0">Calm, grounded, elder-brother wisdom. Building something real, never the loud "alpha." Short, declarative, quotable.</p>
       <h4>Do</h4>
       <ul>
-        <li class="good">Be specific to the actual tweet - add real value.</li>
+        <li class="good">Be specific to the actual tweet.</li>
         <li class="good">Keep it short and quotable. One clean idea.</li>
-        <li class="good">Speak to financial pressure with respect, not hype.</li>
-        <li class="good">Use the calm, slightly spiritual "make-it-out" frame.</li>
+        <li class="good">Speak to money pressure with respect, not hype.</li>
       </ul>
       <h4>Don't</h4>
       <ul>
-        <li class="bad">No generic copy-paste lines like "Goodluck to everyone."</li>
-        <li class="bad">No fake Nigerian slang Richard doesn't actually use.</li>
-        <li class="bad">No hashtags, no spam emojis, no "great post!"</li>
-        <li class="bad">No loud alpha bragging or bitterness.</li>
+        <li class="bad">No generic "Goodluck to everyone" lines.</li>
+        <li class="bad">No fake slang, no hashtags, no spam emojis.</li>
+        <li class="bad">No bragging or bitterness.</li>
       </ul>
     </div>
   </details>
 
   <details>
-    <summary>Ready-made reply lines (tap to copy) <span class="arrow">&rsaquo;</span></summary>
-    <div class="details-body" id="library"></div>
+    <summary>How to use &amp; tips <span class="arrow">&rsaquo;</span></summary>
+    <div class="details-body">
+      <ul>
+        <li>Paste a tweet, pick one mood, tap <b>Write replies</b>.</li>
+        <li>You'll get a few options. Tap <b>Copy</b> on the best one and paste it into the reply box on X.</li>
+        <li>Want different ones? Tap <b>Write more options</b>.</li>
+        <li>First time only: you may see a quick Puter sign-in popup (free) - that's what powers the AI. Approve it once.</li>
+        <li>Keep it handy: open in your browser, then "Add to Home Screen."</li>
+      </ul>
+    </div>
   </details>
 
   <footer>Built for @BraRicky - keep the calm, build quietly.</footer>
@@ -181,97 +136,140 @@
 
 <script>
 var MOODS = [
-  {key:"financial", label:"Financial truth", on:true,
-   def:"Grounded money and wealth takes. The tension between the pressure felt NOW and the quiet, patient build. Respectful of real financial pressure, never hype.",
-   ex:["Broke is a season. Staying broke is a decision you stop making today.",
-       "Quiet money lasts. Loud money is a costume you can't afford.",
-       "Most people don't have a money problem. They have a patience problem.",
-       "The gap between what you earn and what you spend is your freedom."]},
-  {key:"discipline", label:"Discipline", on:true,
-   def:"Ambition and self-mastery. The make-it-out push, built in the hours nobody claps for. Firm but calm, not a drill sergeant.",
-   ex:["You don't rise to your dreams. You fall to your discipline. Build it daily.",
-       "Discipline is just remembering what you actually want.",
-       "The man you're trying to become is built in the hours nobody claps for.",
-       "Nobody is coming. That's not bad news. That's permission."]},
-  {key:"loyalty", label:"Loyalty / relationships", on:true,
-   def:"Calm male-frame wisdom on people, loyalty, peace and growth. Grounded, never bitter.",
-   ex:["Some people are lessons, not losses. Learn it, let them go.",
-       "Loyalty is quiet. The loudest ones are usually the first to leave.",
-       "Protect your peace like it's the only thing you own. Some seasons it is.",
-       "Outgrowing people isn't betrayal. It's just growth they couldn't match."]},
-  {key:"calm", label:"Calm reframe + supportive", on:true,
-   def:"Quiet elder-wisdom reframes, and warm encouragement when someone shares a win or a struggle. Reassuring, steady, kind.",
-   ex:["The quiet months are building something. Keep going.",
-       "You're not behind. You're early on patience.",
-       "Rooting for you. Stay consistent when no one's watching - that's the whole secret.",
-       "What's in your path is the path. Keep walking."]},
-  {key:"funny", label:"Funny / humor", on:true,
-   def:"Light, dry, witty - a clever or playful angle that still fits the calm brand. Smart humor, never mean, never cringe. A wink, not a clown.",
-   ex:["Wealth is boring on purpose. The plot twist no one wanted.",
-       "My toxic trait is thinking 'I'll start Monday' on a Wednesday.",
-       "Bro discovered discipline and now won't stop talking about 5am. We love to see it.",
-       "Saving money is just confusing your old habits until they give up."]}
+  {key:"hype", label:"Agree / Hype",
+   desc:"Enthusiastically co-sign the tweet's point and amplify it. Bring energy and conviction, but stay grounded - hype with substance, not empty cheering."},
+  {key:"challenge", label:"Challenge them",
+   desc:"Respectfully push back or add a sharper counter-angle. Offer the harder truth or the other side. Make them think, never insult."},
+  {key:"wisdom", label:"Drop wisdom",
+   desc:"A calm, timeless principle or reframe - elder-brother wisdom. Quotable, slightly philosophical, the kind of line people screenshot."},
+  {key:"motivational", label:"Motivational",
+   desc:"Encouraging push with make-it-out energy. Lift them, remind them what's possible, fuel the build. Warm but not corny."},
+  {key:"realtalk", label:"Real talk",
+   desc:"Blunt, honest, no sugar. The grounded truth most people avoid saying. Direct but never cruel - tough love from someone who's been there."}
 ];
 
+var selected = null;
 var moodsEl = document.getElementById('moods');
 MOODS.forEach(function(m){
   var c=document.createElement('div');
-  c.className='chip'+(m.on?' on':'');
-  c.innerHTML='<span class="dot"></span>'+m.label;
-  c.onclick=function(){m.on=!m.on;c.classList.toggle('on',m.on);};
+  c.className='chip';c.textContent=m.label;
+  c.onclick=function(){
+    selected=m.key;
+    Array.prototype.forEach.call(moodsEl.children,function(ch){ch.classList.remove('on');});
+    c.classList.add('on');
+  };
   moodsEl.appendChild(c);
 });
 
-var lib=document.getElementById('library');
-MOODS.forEach(function(m){
-  var h=document.createElement('h4');h.textContent=m.label;lib.appendChild(h);
-  m.ex.forEach(function(line){
-    var d=document.createElement('div');d.className='lib-line';
-    d.innerHTML='<span>'+line+'</span><span class="cp">copy</span>';
-    d.onclick=function(){copyText(line);};
-    lib.appendChild(d);
-  });
-});
+// Fallback lines used only if the AI service is unavailable
+var FALLBACK = {
+  hype:["This is it. The ones who get this early are the ones who make it out.","Exactly. Quiet consistency beats loud potential every time.","Say it louder. This is the mindset that changes everything."],
+  challenge:["True - but knowing it and living it are two different things. Which one are you actually doing?","Careful though: the comfort in that line is exactly what keeps most people stuck.","Sounds good, but the real test isn't agreeing with this. It's doing it on the hard days."],
+  wisdom:["What's in your path is the path. Keep walking.","The pressure you feel today is not your final address.","You don't rise to your dreams. You fall to your discipline."],
+  motivational:["Keep going. The quiet months are building something you can't see yet.","You're not behind - you're early on patience. Stay in it.","Hard now or hard later. Choose the hard that builds you."],
+  realtalk:["Nobody is coming to save you. That's not bad news - that's permission.","Most people don't have a money problem. They have a patience problem.","Broke is a season. Staying broke is a decision you stop making today."]
+};
 
-function build(){
-  var tweet=document.getElementById('tweet').value.trim();
-  var ctx=document.getElementById('ctx').value.trim();
-  var n=document.getElementById('count').value;
-  var chosen=MOODS.filter(function(m){return m.on;});
-  if(!tweet){toast('Paste a tweet first');return;}
-  if(!chosen.length){toast('Pick at least one mood');return;}
+function setStatus(html){document.getElementById('status').innerHTML=html;}
+function clearResults(){document.getElementById('results').innerHTML='';}
+function moodByKey(k){for(var i=0;i<MOODS.length;i++){if(MOODS[i].key===k)return MOODS[i];}return null;}
 
-  var p="You are writing Twitter/X replies AS @BraRicky, a calm, grounded discipline-and-wealth voice for ambitious young men (audience is mostly Nigerian men).\n\n";
-  p+="VOICE: Calm, grounded, elder-brother wisdom. The disciplined man who is building something real, never the loud \"alpha.\" Short, declarative, complete thoughts. Quotable. Cut every line in half, then post.\n\n";
-  p+="RULES:\n- Each reply must be SPECIFIC to the tweet below and add real value.\n- Keep each reply under 280 characters; shorter is better.\n- No hashtags. No spam emojis. No generic lines like \"Goodluck to everyone.\"\n- Do NOT fake Nigerian slang. The calm building-in-public voice travels on its own.\n- Speak to financial pressure with respect, not hype. No bitterness, no bragging.\n\n";
-  p+="TWEET I'M REPLYING TO:\n\"\"\"\n"+tweet+"\n\"\"\"\n\n";
-  if(ctx){p+="EXTRA CONTEXT: "+ctx+"\n\n";}
-  p+="Give me "+n+" reply options for EACH of these moods. Label each mood, then number the options. Make the options distinct from each other.\n\n";
-  chosen.forEach(function(m,i){
-    p+=(i+1)+". "+m.label+" - "+m.def+"\n";
-    p+="   Style example (match the energy, don't copy): \""+m.ex[0]+"\"\n\n";
-  });
-  p+="Output only the labeled, numbered replies, ready to copy and paste.";
-
-  document.getElementById('out').textContent=p;
-  document.getElementById('outWrap').style.display='block';
-  var btn=document.getElementById('copyBtn');btn.classList.remove('done');btn.textContent='Copy prompt';
-  var ow=document.getElementById('outWrap');if(ow.scrollIntoView){ow.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function buildPrompt(tweet,ctx,mood){
+  var p="You write Twitter/X replies AS @BraRicky - a calm, grounded discipline-and-wealth voice for ambitious young men (audience is mostly Nigerian men).\n\n";
+  p+="VOICE: Calm, grounded, elder-brother wisdom. The disciplined man building something real, never the loud alpha. Short, declarative, complete thoughts. Quotable.\n";
+  p+="RULES: Each reply must be SPECIFIC to the tweet and add value. Under 280 characters, shorter is better. No hashtags. No spam emojis. No generic lines like 'Goodluck to everyone.' Do not fake Nigerian slang. Speak to money pressure with respect, not hype. No bragging, no bitterness.\n\n";
+  p+="MOOD for this reply - "+mood.label+": "+mood.desc+"\n\n";
+  p+="TWEET I'M REPLYING TO:\n\"\"\"\n"+tweet+"\n\"\"\"\n";
+  if(ctx){p+="\nEXTRA CONTEXT: "+ctx+"\n";}
+  p+="\nWrite 3 distinct reply options in this mood and voice. Output ONLY the 3 replies, each on its own line, prefixed '1. ', '2. ', '3. '. No preamble, no explanation, no quotes around them.";
+  return p;
 }
 
-function copyPrompt(){
-  var t=document.getElementById('out').textContent;
-  copyText(t,function(){
-    var b=document.getElementById('copyBtn');b.classList.add('done');b.textContent='Copied - now paste into ChatGPT/Claude/Gemini';
+function extractText(r){
+  if(r==null)return "";
+  if(typeof r==="string")return r;
+  if(r.message){
+    var c=r.message.content;
+    if(typeof c==="string")return c;
+    if(Array.isArray(c))return c.map(function(x){return x.text||x.content||"";}).join("");
+  }
+  if(typeof r.text==="string")return r.text;
+  if(typeof r.content==="string")return r.content;
+  try{return String(r);}catch(e){return "";}
+}
+
+function parseOptions(text){
+  var lines=text.split("\n").map(function(s){return s.trim();}).filter(Boolean);
+  var opts=[];
+  lines.forEach(function(l){
+    if(/^\d+[\.\)]/.test(l)){
+      opts.push(l.replace(/^\d+[\.\)]\s*/,"").replace(/^["'“]+|["'”]+$/g,"").trim());
+    }
   });
+  if(opts.length===0){
+    opts=text.split("\n").map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
+  }
+  return opts.filter(Boolean).slice(0,3);
+}
+
+function renderReplies(opts){
+  var box=document.getElementById('results');
+  box.innerHTML='';
+  opts.forEach(function(t){
+    var card=document.createElement('div');card.className='reply';
+    var txt=document.createElement('div');txt.className='txt';txt.textContent=t;
+    var bar=document.createElement('div');bar.className='bar';
+    var meta=document.createElement('div');meta.className='meta';meta.textContent=t.length+' chars';
+    var btn=document.createElement('button');btn.className='copybtn';btn.textContent='Copy';
+    btn.onclick=function(){copyText(t,function(){btn.classList.add('done');btn.textContent='Copied';setTimeout(function(){btn.classList.remove('done');btn.textContent='Copy';},1500);});};
+    bar.appendChild(meta);bar.appendChild(btn);
+    card.appendChild(txt);card.appendChild(bar);
+    box.appendChild(card);
+  });
+  var more=document.createElement('button');more.className='regen';more.textContent='Write more options';
+  more.onclick=generate;
+  box.appendChild(more);
+}
+
+async function callPuter(prompt){
+  if(typeof puter==="undefined"||!puter.ai||!puter.ai.chat){throw new Error("no-puter");}
+  try{
+    return extractText(await puter.ai.chat(prompt,{model:"gpt-4o-mini"}));
+  }catch(e){
+    return extractText(await puter.ai.chat(prompt));
+  }
+}
+
+async function generate(){
+  var tweet=document.getElementById('tweet').value.trim();
+  var ctx=document.getElementById('ctx').value.trim();
+  if(!tweet){toast('Paste a tweet first');return;}
+  if(!selected){toast('Pick a mood');return;}
+  var mood=moodByKey(selected);
+  var btn=document.getElementById('genBtn');btn.disabled=true;
+  clearResults();
+  setStatus('<span class="spinner"></span>Writing replies in your voice...');
+  try{
+    var text=await callPuter(buildPrompt(tweet,ctx,mood));
+    var opts=parseOptions(text);
+    if(!opts.length)throw new Error("empty");
+    setStatus('');
+    renderReplies(opts);
+    var rb=document.getElementById('results');if(rb.scrollIntoView){rb.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  }catch(e){
+    setStatus('AI is unavailable right now - showing backup lines for this mood. Try again in a moment for tweet-specific replies.');
+    renderReplies(FALLBACK[selected]||[]);
+  }finally{
+    btn.disabled=false;
+  }
 }
 
 function copyText(text,cb){
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){toast('Copied');if(cb)cb();},function(){fallback(text,cb);});
-  }else{fallback(text,cb);}
+    navigator.clipboard.writeText(text).then(function(){toast('Copied');if(cb)cb();},function(){fb(text,cb);});
+  }else{fb(text,cb);}
 }
-function fallback(text,cb){
+function fb(text,cb){
   var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
   document.body.appendChild(ta);ta.focus();ta.select();
   try{document.execCommand('copy');toast('Copied');if(cb)cb();}catch(e){toast('Press and hold to copy');}
@@ -285,4 +283,3 @@ function toast(msg){
 </script>
 </body>
 </html>
-                                                                                                                                                                                                                     
