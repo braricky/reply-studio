@@ -231,12 +231,15 @@ function renderReplies(opts){
   box.appendChild(more);
 }
 
+function withTimeout(promise,ms){
+  return Promise.race([promise,new Promise(function(_,rej){setTimeout(function(){rej(new Error("timeout"));},ms);})]);
+}
 async function callPuter(prompt){
   if(typeof puter==="undefined"||!puter.ai||!puter.ai.chat){throw new Error("no-puter");}
   try{
-    return extractText(await puter.ai.chat(prompt,{model:"gpt-4o-mini"}));
+    return extractText(await withTimeout(puter.ai.chat(prompt,{model:"gpt-4o-mini"}),40000));
   }catch(e){
-    return extractText(await puter.ai.chat(prompt));
+    return extractText(await withTimeout(puter.ai.chat(prompt),40000));
   }
 }
 
@@ -257,7 +260,7 @@ async function generate(){
     renderReplies(opts);
     var rb=document.getElementById('results');if(rb.scrollIntoView){rb.scrollIntoView({behavior:'smooth',block:'nearest'});}
   }catch(e){
-    setStatus('AI is unavailable right now - showing backup lines for this mood. Try again in a moment for tweet-specific replies.');
+    setStatus('Couldn\'t reach the AI just now (if a Puter sign-in popup appeared, approve it once, then tap "Write replies" again). Showing backup lines for this mood meanwhile.');
     renderReplies(FALLBACK[selected]||[]);
   }finally{
     btn.disabled=false;
